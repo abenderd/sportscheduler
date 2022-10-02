@@ -1,0 +1,76 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "array",
+    "default": [],
+    "title": "Root Schema",
+    "items": {
+        "type": "object",
+        "default": {},
+        "title": "A Schema",
+        "required": [
+            "id",
+            "sport",
+            "place",
+            "appointment_date"
+        ],
+        "properties": {
+            "id": {
+                "type": "string",
+                "default": "",
+                "title": "The id Schema",
+                "examples": [
+                    "0628f2e0-bc9d-4ae2-af52-c9c3adba4590"
+                ]
+            },
+            "sport": {
+                "type": "string",
+                "default": "",
+                "title": "The sport Schema",
+                "examples": [
+                    "Basquete"
+                ]
+            },
+            "place": {
+                "type": "string",
+                "default": "",
+                "title": "The place Schema",
+                "examples": [
+                    "Pracinha"
+                ]
+            },
+            "description": {
+                "type": "string",
+                "default": "",
+                "title": "The description Schema",
+                "examples": [
+                    "Basquete de domingo na pracinha"
+                ]
+            },
+            "appointment_date": {
+                "type": "string",
+                "default": "",
+                "title": "The appointment_date Schema",
+                "examples": [
+                    "2022-10-16T12:39:40"
+                ]
+            }
+        },
+        "examples": [{
+            "id": "0628f2e0-bc9d-4ae2-af52-c9c3adba4590",
+            "sport": "Basquete",
+            "place": "Pracinha",
+            "description": "Basquete de domingo na pracinha",
+            "appointment_date": "2022-10-16T12:39:40"
+        }]
+    },
+    "examples": [
+        [{
+            "id": "0628f2e0-bc9d-4ae2-af52-c9c3adba4590",
+            "sport": "Basquete",
+            "place": "Pracinha",
+            "description": "Basquete de domingo na pracinha",
+            "appointment_date": "2022-10-16T12:39:40"
+        }]
+    ]
+}
