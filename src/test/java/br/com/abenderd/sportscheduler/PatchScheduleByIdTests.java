@@ -72,7 +72,7 @@ class PatchScheduleByIdTests extends ScheduleAbstractTest {
         .body("id", equalTo(scheduleId))
         .body("sport", equalTo("Basquete"))
         .body("place", equalTo("Praca Joana D Arc"))
-        .body("description", equalTo("Basquete da ABS"))
+        .body("description", equalTo("Basquete da ASB"))
         .statusCode(200);
   }
 

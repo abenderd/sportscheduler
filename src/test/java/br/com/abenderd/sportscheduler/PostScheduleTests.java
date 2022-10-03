@@ -24,7 +24,7 @@ class PostScheduleTests extends ScheduleAbstractTest {
   }
 
   @BeforeEach
-  public void beforeEach(){
+  public void beforeEach() {
     this.scheduleRequestBody = scheduleFullFilledBodyBuilder();
   }
 
@@ -36,7 +36,8 @@ class PostScheduleTests extends ScheduleAbstractTest {
         .when().log().all()
         .post("/schedules")
         .then().log().all()
-        .body(Matchers.emptyOrNullString()).statusCode(201);
+        .body(Matchers.emptyOrNullString())
+        .statusCode(201);
   }
 
   @Test
@@ -67,7 +68,7 @@ class PostScheduleTests extends ScheduleAbstractTest {
   }
 
   @Test
-  public void testRequestBodyValidatingUserFieldTest() throws Exception {
+  public void shouldNotCreateScheduleWithInvalidFieldSportTest() throws Exception {
     scheduleRequestBody.setSport("");
 
     given()

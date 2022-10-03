@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.when;
 
 import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,8 +39,8 @@ class DeleteScheduleByIdTests extends ScheduleAbstractTest {
         .statusCode(404);
   }
 
-  @Test
-  void shouldNotGetScheduleByIdTest() {
+  @AfterAll
+  static void shouldNotGetScheduleByIdTest() {
     when()
         .get("schedules/" + scheduleId)
         .then().log().all()
