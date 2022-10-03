@@ -30,14 +30,23 @@ public class SchedulerServiceImpl implements SchedulerService {
 
   @Override
   public Schedule getScheduleById(String id) throws NotFoundException {
-    return scheduleRepository.findById(UUID.fromString(id)).orElseThrow(NotFoundException::new);
+    try {
+      UUID uuid = UUID.fromString(id);
+      return scheduleRepository.findById(uuid).get();
+    } catch (RuntimeException e) {
+      throw new NotFoundException();
+    }
   }
 
   @Override
   public Schedule updateScheduleById(String id, Schedule schedule) {
-    schedule.setId(UUID.fromString(id));
-
-    return scheduleRepository.save(schedule);
+    try {
+      UUID uuid = UUID.fromString(id);
+      schedule.setId(UUID.fromString(id));
+      return scheduleRepository.save(schedule);
+    } catch (RuntimeException e) {
+      throw new NotFoundException();
+    }
   }
 
   @Override
@@ -66,7 +75,12 @@ public class SchedulerServiceImpl implements SchedulerService {
 
   @Override
   public void deleteScheduleById(String id) {
-    scheduleRepository.deleteById(UUID.fromString(id));
+    try {
+      UUID uuid = UUID.fromString(id);
+      scheduleRepository.deleteById(UUID.fromString(id));
+    } catch (RuntimeException e) {
+      throw new NotFoundException();
+    }
   }
 
 }

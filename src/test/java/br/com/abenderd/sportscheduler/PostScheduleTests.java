@@ -10,14 +10,12 @@ import java.time.temporal.ChronoUnit;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PostScheduleTests {
-
-  static String baseURI = "http://localhost:8083/sport-scheduler/v1";
-  private Schedule scheduleRequestBody;
+class PostScheduleTests extends ScheduleAbstractTest {
 
   @BeforeAll
   public static void beforeClass() {
@@ -25,11 +23,16 @@ class PostScheduleTests {
     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
   }
 
+  @BeforeEach
+  public void beforeEach(){
+    this.scheduleRequestBody = scheduleFullFilledBodyBuilder();
+  }
+
   @Test
   void shouldCreateScheduleTest() {
     given()
         .header("Content-Type", "application/json")
-        .body(scheduleFullFilledBodyBuilder())
+        .body(scheduleRequestBody)
         .when().log().all()
         .post("/schedules")
         .then().log().all()
@@ -38,8 +41,6 @@ class PostScheduleTests {
 
   @Test
   void shouldCreateScheduleWithFieldSport50CharactersLengthTest() {
-    scheduleFullFilledBodyBuilder();
-
     scheduleRequestBody.setSport(RandomStringUtils.randomAlphabetic(50));
 
     given()
@@ -48,7 +49,8 @@ class PostScheduleTests {
         .when().log().all()
         .post("/schedules")
         .then().log().all()
-        .body(Matchers.emptyOrNullString()).statusCode(201);
+        .body(Matchers.emptyOrNullString())
+        .statusCode(201);
   }
 
   @Test
@@ -65,9 +67,7 @@ class PostScheduleTests {
   }
 
   @Test
-  public void testRequestBodyValidatingUserField() throws Exception {
-    scheduleFullFilledBodyBuilder();
-
+  public void testRequestBodyValidatingUserFieldTest() throws Exception {
     scheduleRequestBody.setSport("");
 
     given()
@@ -113,14 +113,6 @@ class PostScheduleTests {
         .body("[0].message", equalTo("Field 'sport' is mandatory."))
         .body("[1].message", Matchers.emptyOrNullString())
         .statusCode(400);
-  }
-
-  private Schedule scheduleFullFilledBodyBuilder() {
-    scheduleRequestBody = Schedule.builder().place("Derla").sport("Volei")
-        .appointmentDate(LocalDateTime.now().plusDays(15).truncatedTo(
-            ChronoUnit.SECONDS)).description("Volei quinzenal no Derla.").build();
-
-    return scheduleRequestBody;
   }
 
   private Schedule scheduleMissingMandatoryFieldPlaceBodyBuilder() {

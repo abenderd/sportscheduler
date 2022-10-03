@@ -1,0 +1,62 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "id",
+        "sport",
+        "place",
+        "appointment_date"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "default": "",
+            "title": "The id Schema",
+            "examples": [
+                "a60d5040-84d9-497e-8ba7-6898abc78180"
+            ]
+        },
+        "sport": {
+            "type": "string",
+            "default": "",
+            "title": "The sport Schema",
+            "examples": [
+                "Volei"
+            ]
+        },
+        "place": {
+            "type": "string",
+            "default": "",
+            "title": "The place Schema",
+            "examples": [
+                "Derla"
+            ]
+        },
+        "description": {
+            "type": "string",
+            "default": "",
+            "title": "The description Schema",
+            "examples": [
+                "Volei quinzenal no Derla."
+            ]
+        },
+        "appointment_date": {
+            "type": "string",
+            "default": "",
+            "title": "The appointment_date Schema",
+            "examples": [
+                "2022-10-17T19:10:10"
+            ]
+        }
+    },
+    "examples": [{
+        "id": "a60d5040-84d9-497e-8ba7-6898abc78180",
+        "sport": "Volei",
+        "place": "Derla",
+        "description": "Volei quinzenal no Derla.",
+        "appointment_date": "2022-10-17T19:10:10"
+    }]
+}

@@ -3,9 +3,7 @@ package br.com.abenderd.sportscheduler.config;
 import br.com.abenderd.sportscheduler.config.exception.NotFoundException;
 import br.com.abenderd.sportscheduler.dto.ErrorMessage;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -22,35 +20,29 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-  @ResponseStatus(HttpStatus.NOT_FOUND)
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<?>
-  handleConstraintViolation(ConstraintViolationException ex) {
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseEntity<?> handleConstraintViolation(ConstraintViolationException ex) {
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<Object> handleNotFoundException(
-      NotFoundException ex, WebRequest request) {
+  public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-      HttpHeaders headers,
-      HttpStatus status, WebRequest request) {
-    List<ErrorMessage> errorMessagesList = new ArrayList<>();
+      HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-    List<String> errors = ex.getBindingResult()
+    final List<ErrorMessage> errorMessagesList = ex.getBindingResult()
         .getFieldErrors()
         .stream()
         .map(DefaultMessageSourceResolvable::getDefaultMessage)
+        .map(ErrorMessage::new)
         .collect(Collectors.toList());
 
-    errors.forEach(a -> errorMessagesList.add(new ErrorMessage(a)));
-
     return new ResponseEntity<>(errorMessagesList, HttpStatus.BAD_REQUEST);
-
   }
 
 }
