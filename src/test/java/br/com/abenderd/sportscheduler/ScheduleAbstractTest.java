@@ -40,7 +40,6 @@ public abstract class ScheduleAbstractTest {
         .appointmentDate(LocalDateTime.now().plusDays(15).truncatedTo(ChronoUnit.SECONDS))
         .description(description)
         .build();
-
     return scheduleRequestBody;
   }
 

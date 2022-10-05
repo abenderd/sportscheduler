@@ -25,20 +25,6 @@ class PutScheduleByIdTests extends ScheduleAbstractTest {
     createSchedule();
   }
 
-  @AfterAll
-  static void shouldGetScheduleByIdTest() {
-    when()
-        .get("schedules/" + scheduleId)
-        .then().log().all()
-        .assertThat()
-        .body(matchesJsonSchemaInClasspath("schemas/GetScheduleByIdSchema.json"))
-        .body("id", equalTo(scheduleId))
-        .body("sport", equalTo("Futebol"))
-        .body("place", equalTo("Villa Lobos"))
-        .body("description", equalTo("Futebol semanal, turma da tarde."))
-        .statusCode(200);
-  }
-
   @Test
   void shouldUpdateScheduleByIdTest() {
     given()
@@ -76,6 +62,20 @@ class PutScheduleByIdTests extends ScheduleAbstractTest {
         .body("[0].message", equalTo("Field 'appointment_date' is mandatory."))
         .body("[1].message", Matchers.emptyOrNullString())
         .statusCode(400);
+  }
+
+  @AfterAll
+  static void shouldGetScheduleByIdTest() {
+    when()
+        .get("schedules/" + scheduleId)
+        .then().log().all()
+        .assertThat()
+        .body(matchesJsonSchemaInClasspath("schemas/GetScheduleByIdSchema.json"))
+        .body("id", equalTo(scheduleId))
+        .body("sport", equalTo("Futebol"))
+        .body("place", equalTo("Villa Lobos"))
+        .body("description", equalTo("Futebol semanal, turma da tarde."))
+        .statusCode(200);
   }
 
   private Schedule scheduleMissingMandatoryFieldAppointmentDateBodyBuilder() {
