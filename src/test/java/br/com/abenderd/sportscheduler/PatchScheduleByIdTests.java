@@ -8,11 +8,10 @@ import static org.hamcrest.Matchers.equalTo;
 import br.com.abenderd.sportscheduler.entity.Schedule;
 import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
 
 @SpringBootTest
 class PatchScheduleByIdTests extends ScheduleAbstractTest {
@@ -21,9 +20,8 @@ class PatchScheduleByIdTests extends ScheduleAbstractTest {
   public static void beforeClass() {
     RestAssured.baseURI = baseURI;
     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    postSchedule();
+    createSchedule();
   }
-
   @Test
   void shouldPartialUpdateScheduleByIdWithFullFilledTest() {
     given()
@@ -77,8 +75,11 @@ class PatchScheduleByIdTests extends ScheduleAbstractTest {
   }
 
   private Schedule scheduleWithoutFieldAppointmentDateBodyBuilder() {
-    return Schedule.builder().sport("Basquete")
-        .place("Praca Joana D Arc").description("Basquete da ABS").build();
+    return Schedule.builder()
+        .sport("Basquete")
+        .place("Praca Joana D Arc")
+        .description("Basquete da ASB")
+        .build();
   }
 
 }

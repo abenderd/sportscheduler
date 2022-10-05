@@ -9,7 +9,5 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class ErrorMessage {
-
   private String message;
-
 }

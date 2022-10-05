@@ -17,7 +17,7 @@ class GetScheduleByIdTests extends ScheduleAbstractTest {
   public static void beforeClass() {
     RestAssured.baseURI = baseURI;
     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    postSchedule();
+    createSchedule();
   }
 
   @Test

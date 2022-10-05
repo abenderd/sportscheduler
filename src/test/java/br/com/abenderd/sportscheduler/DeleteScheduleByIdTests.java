@@ -16,7 +16,17 @@ class DeleteScheduleByIdTests extends ScheduleAbstractTest {
   public static void beforeClass() {
     RestAssured.baseURI = baseURI;
     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    postSchedule();
+    createSchedule();
+  }
+
+  @AfterAll
+  static void shouldNotGetScheduleByIdTest() {
+    when()
+        .get("schedules/" + scheduleId)
+        .then().log().all()
+        .assertThat()
+        .body(Matchers.emptyOrNullString())
+        .statusCode(404);
   }
 
   @Test
@@ -33,16 +43,6 @@ class DeleteScheduleByIdTests extends ScheduleAbstractTest {
   void shouldDeleteScheduleByNonExistentIdTest() {
     when()
         .delete("schedules/" + scheduleId)
-        .then().log().all()
-        .assertThat()
-        .body(Matchers.emptyOrNullString())
-        .statusCode(404);
-  }
-
-  @AfterAll
-  static void shouldNotGetScheduleByIdTest() {
-    when()
-        .get("schedules/" + scheduleId)
         .then().log().all()
         .assertThat()
         .body(Matchers.emptyOrNullString())

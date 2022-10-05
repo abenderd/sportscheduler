@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -34,13 +35,10 @@ public class SchedulerController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public void scheduler(HttpServletResponse httpServletResponse,
-      UriComponentsBuilder uriComponentsBuilder,
+  public void scheduler(HttpServletResponse httpServletResponse, UriComponentsBuilder uriComponentsBuilder,
       @Valid @RequestBody Schedule schedule) {
-    Schedule scheduleResponse = schedulerService.createSchedule(schedule);
-    httpServletResponse.setHeader("Location", uriComponentsBuilder.path("/schedules/{id}")
-        .buildAndExpand(scheduleResponse.getId())
-        .toString());
+    final Schedule scheduleResponse = schedulerService.createSchedule(schedule);
+    setLocation(httpServletResponse, getUriComponentsBuilder(uriComponentsBuilder, scheduleResponse.getId().toString()));
   }
 
   @GetMapping
@@ -68,11 +66,9 @@ public class SchedulerController {
       @PathVariable("scheduleId") @Size(max = 36, message = "Invalid path parameter 'scheduleId'.") String id)
       throws NotFoundException {
 
-    Schedule sheduleResponse = schedulerService.updateScheduleById(id, schedule);
+    final Schedule sheduleResponse = schedulerService.updateScheduleById(id, schedule);
 
-    httpServletResponse.setHeader("Location", uriComponentsBuilder.path("/schedules/{id}")
-        .buildAndExpand(sheduleResponse.getId())
-        .toString());
+    setLocation(httpServletResponse, getUriComponentsBuilder(uriComponentsBuilder, id));
   }
 
   @PatchMapping(path = "/{scheduleId}")
@@ -82,12 +78,10 @@ public class SchedulerController {
       @Valid @RequestBody SchedulePartialUpdateRequest schedulePartialUpdateRequest,
       @PathVariable("scheduleId") @Size(max = 36, message = "Invalid path parameter 'scheduleId'.") String id)
       throws NotFoundException {
-    Schedule scheduleResponse = schedulerService.partialUpdateScheduleById(id,
+    final Schedule scheduleResponse = schedulerService.partialUpdateScheduleById(id,
         schedulePartialUpdateRequest);
 
-    httpServletResponse.setHeader("Location", uriComponentsBuilder.path("/schedules/{id}")
-        .buildAndExpand(id)
-        .toString());
+    setLocation(httpServletResponse, getUriComponentsBuilder(uriComponentsBuilder, id));
   }
 
   @DeleteMapping(path = "/{scheduleId}")
@@ -96,4 +90,14 @@ public class SchedulerController {
     schedulerService.deleteScheduleById(scheduleId);
   }
 
+  private static UriComponents getUriComponentsBuilder(UriComponentsBuilder uriComponentsBuilder,
+      String id) {
+    return uriComponentsBuilder.path("/schedules/{id}").buildAndExpand(id);
+  }
+
+  private static void setLocation(HttpServletResponse httpServletResponse,
+      UriComponents uriComponentsBuilder) {
+    httpServletResponse.setHeader("Location", uriComponentsBuilder
+        .toString());
+  }
 }

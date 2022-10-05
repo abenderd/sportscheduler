@@ -17,7 +17,7 @@ class GetScheduleTests extends ScheduleAbstractTest {
   public static void beforeClass() {
     RestAssured.baseURI = baseURI;
     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    postSchedule();
+    createSchedule();
   }
 
   @Test
@@ -45,9 +45,7 @@ class GetScheduleTests extends ScheduleAbstractTest {
   void shouldGetEmptySchedulesListFilteringByNonExistentQueryParameterTest() {
     when()
         .get("/schedules?sport=Voley")
-        .then()
-        .log()
-        .all()
+        .then().log().all()
         .assertThat()
         .body(matchesJsonSchemaInClasspath("schemas/GetSchedulesSchema.json"))
         .body("", equalTo(Collections.emptyList()))

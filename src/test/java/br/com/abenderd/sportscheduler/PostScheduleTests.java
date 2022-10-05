@@ -25,7 +25,7 @@ class PostScheduleTests extends ScheduleAbstractTest {
 
   @BeforeEach
   public void beforeEach() {
-    this.scheduleRequestBody = scheduleFullFilledBodyBuilder();
+    scheduleRequestBody = scheduleFullFilledBodyBuilder();
   }
 
   @Test
@@ -55,20 +55,7 @@ class PostScheduleTests extends ScheduleAbstractTest {
   }
 
   @Test
-  void shouldNotCreateScheduleMissingMandatoryFieldPlaceTest() {
-    given()
-        .header("Content-Type", "application/json")
-        .body(scheduleMissingMandatoryFieldPlaceBodyBuilder())
-        .when().log().all()
-        .post("/schedules")
-        .then().log().all()
-        .body("[0].message", equalTo("Field 'place' is mandatory."))
-        .body("[1].message", Matchers.emptyOrNullString())
-        .statusCode(400);
-  }
-
-  @Test
-  public void shouldNotCreateScheduleWithInvalidFieldSportTest() throws Exception {
+  public void shouldNotCreateScheduleWithEmptyFieldSportTest() throws Exception {
     scheduleRequestBody.setSport("");
 
     given()
@@ -80,7 +67,10 @@ class PostScheduleTests extends ScheduleAbstractTest {
         .body("[0].message", equalTo("Field 'sport' is mandatory."))
         .body("[1].message", Matchers.emptyOrNullString())
         .statusCode(400);
+  }
 
+  @Test
+  public void shouldNotCreateScheduleWithNullFieldSportTest() throws Exception {
     scheduleRequestBody.setSport(null);
 
     given()
@@ -92,7 +82,10 @@ class PostScheduleTests extends ScheduleAbstractTest {
         .body("[0].message", equalTo("Field 'sport' is mandatory."))
         .body("[1].message", Matchers.emptyOrNullString())
         .statusCode(400);
+  }
 
+  @Test
+  public void shouldNotCreateScheduleWithOverpassingLimitFieldSportTest() throws Exception {
     scheduleRequestBody.setSport(RandomStringUtils.randomAlphabetic(51));
 
     given()
@@ -104,7 +97,10 @@ class PostScheduleTests extends ScheduleAbstractTest {
         .body("[0].message", equalTo("Field 'sport' is overpassing 50 characters limit."))
         .body("[1].message", Matchers.emptyOrNullString())
         .statusCode(400);
+  }
 
+  @Test
+  public void shouldNotCreateScheduleMissingMandatoryFieldSportTest() throws Exception {
     given()
         .header("Content-Type", "application/json")
         .body(scheduleMissingMandatoryFieldSportBodyBuilder())
@@ -112,6 +108,19 @@ class PostScheduleTests extends ScheduleAbstractTest {
         .post("/schedules")
         .then().log().all()
         .body("[0].message", equalTo("Field 'sport' is mandatory."))
+        .body("[1].message", Matchers.emptyOrNullString())
+        .statusCode(400);
+  }
+
+  @Test
+  void shouldNotCreateScheduleMissingMandatoryFieldPlaceTest() {
+    given()
+        .header("Content-Type", "application/json")
+        .body(scheduleMissingMandatoryFieldPlaceBodyBuilder())
+        .when().log().all()
+        .post("/schedules")
+        .then().log().all()
+        .body("[0].message", equalTo("Field 'place' is mandatory."))
         .body("[1].message", Matchers.emptyOrNullString())
         .statusCode(400);
   }

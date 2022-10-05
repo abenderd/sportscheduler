@@ -18,7 +18,6 @@ public interface ScheduleRepository extends CrudRepository<Schedule, UUID> {
   List<Schedule> findAllByFilters(String sport, String description, String place,
       String appointmentDate);
 
-
   List<Schedule> findBySportOrDescription(String sport, String description);
 
 }

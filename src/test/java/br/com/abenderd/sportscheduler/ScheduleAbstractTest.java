@@ -14,10 +14,11 @@ public abstract class ScheduleAbstractTest {
   protected static String sport = "Volei";
   protected static String description = "Volei quinzenal no Derla.";
   protected static String scheduleId;
-  static String baseURI = "http://localhost:8083/sport-scheduler/v1";
   protected static String scheduleLocationHeader;
+  static String baseURI = "http://localhost:8083/sport-scheduler/v1";
 
-  protected static String postSchedule() {
+  protected static void createSchedule() {
+
     scheduleLocationHeader = given()
         .header("Content-Type", "application/json")
         .body(scheduleFullFilledBodyBuilder())
@@ -28,20 +29,23 @@ public abstract class ScheduleAbstractTest {
         .statusCode(201)
         .extract()
         .header("Location");
+
     setLocationId(scheduleLocationHeader);
-    return scheduleLocationHeader;
   }
 
   protected static Schedule scheduleFullFilledBodyBuilder() {
-    scheduleRequestBody = Schedule.builder().place(place).sport(sport)
-        .appointmentDate(LocalDateTime.now().plusDays(15).truncatedTo(
-            ChronoUnit.SECONDS)).description(description).build();
+    scheduleRequestBody = Schedule.builder()
+        .place(place)
+        .sport(sport)
+        .appointmentDate(LocalDateTime.now().plusDays(15).truncatedTo(ChronoUnit.SECONDS))
+        .description(description)
+        .build();
 
     return scheduleRequestBody;
   }
 
   protected static void setLocationId(String location) {
-    scheduleId =location.split("schedules/")[1];
+    scheduleId = location.split("schedules/")[1];
   }
 
 }
